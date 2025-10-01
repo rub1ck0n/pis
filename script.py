@@ -13,12 +13,20 @@ def parse_line(line: str) -> dict:
         "speed": speed
     }
 
-filename = "input.txt"
-with open(filename, encoding="utf-8") as f:
-    for line in f:
-        line = line.strip()
-        if not line:
-            continue
-        obj = parse_line(line)
+# 2. Обработка файла
+def process_file(filename: str):
+    with open(filename, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            yield parse_line(line)
+
+# 3. Главная функция программы
+def main():
+    filename = "input.txt"
+    for obj in process_file(filename):
         print(json.dumps(obj, ensure_ascii=False))
 
+if __name__ == "__main__":
+    main()
