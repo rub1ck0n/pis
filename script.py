@@ -1,6 +1,6 @@
 import json, shlex
 
-# функция разбирает одну строку и возвращает словарь
+# 1. Разбор строки
 def parse_line(line: str) -> dict:
     type_part, props = line.split(":", 1)
     tokens = shlex.split(props)
