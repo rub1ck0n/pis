@@ -19,6 +19,5 @@ with open(filename, encoding="utf-8") as f:
         line = line.strip()
         if not line:
             continue
-            continue
-        obj = parse_line(line)  # вызываем функцию
+        obj = parse_line(line)
         print(json.dumps(obj, ensure_ascii=False))
