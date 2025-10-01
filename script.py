@@ -1,4 +1,4 @@
-import json, shlex
+import json, shlex #
 
 filename = "input.txt"
 with open(filename, encoding="utf-8") as f:
