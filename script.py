@@ -1,17 +1,4 @@
-import json, shlex
-
-# функция разбирает одну строку и возвращает словарь
-def parse_line(line: str) -> dict:
-    type_part, props = line.split(":", 1)
-    tokens = shlex.split(props)
-    date, plate, mark, speed = tokens[0], tokens[1], tokens[2], tokens[3]
-    return {
-        "type": type_part.strip(),
-        "date": date,
-        "plate": plate,
-        "mark": mark,
-        "speed": speed
-    }
+import json, shlex      # shlex разделяет строку на части, учитывая кавычки
 
 filename = "input.txt"
 with open(filename, encoding="utf-8") as f:
@@ -19,5 +6,10 @@ with open(filename, encoding="utf-8") as f:
         line = line.strip()
         if not line:
             continue
-        obj = parse_line(line)  # вызываем функцию
-        print(json.dumps(obj, ensure_ascii=False))
+        type_part, props = line.split(":", 1)
+        tokens = shlex.split(props)         # корректное разбиение props
+        date, plate, mark, speed = tokens[0], tokens[1], tokens[2], tokens[3]
+        obj = {"type": type_part, "date": date, "plate": plate, "mark": mark, "speed": speed}
+        print(json.dumps(obj, ensure_ascii=False))          #преобразуем словарь в json-строку
+
+
