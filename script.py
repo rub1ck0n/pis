@@ -1,17 +1,49 @@
 import json, shlex
 
-# 1. Разбор строки
-def parse_line(line: str) -> dict:
+# Общая токенизация строки
+def tokenize(line: str):
     type_part, props = line.split(":", 1)
+    type_part = " ".join(type_part.split())  # нормализуем пробелы
     tokens = shlex.split(props)
-    date, plate, mark, speed = tokens[0], tokens[1], tokens[2], tokens[3]
-    return {
-        "type": type_part.strip(),
-        "date": date,
-        "plate": plate,
-        "mark": mark,
-        "speed": speed
-    }
+    return type_part, tokens
+
+# Парсеры под конкретные типы
+
+# Тип 1: Фиксация проезда автомобилей
+# Формат свойств: "гггг.мм.дд" "чч:мм" "номер автомобиля" "скорость"
+def parse_car_passage(tokens):
+    date, time, plate, speed = tokens[0], tokens[1], tokens[2], tokens[3]
+    return {"Date": date, "Time": time, "Plate": plate, "Speed": speed}
+
+# Тип 2: Регистрация парковки
+# Формат свойств: "гггг.мм.дд" "чч:мм" "номер автомобиля" "номер места" "стоимость за час"
+def parse_parking(tokens):
+    date, time, plate, place, cost = tokens[0], tokens[1], tokens[2], tokens[3], tokens[4]
+    return {"Date": date, "Time": time, "Plate": plate, "Place": place, "Cost": cost}
+
+# Тип 3: Регистрация заправки
+# Формат свойств: "гггг.мм.дд" "чч:мм" "номер автомобиля"
+#                 "тип топлива" "итоговая цена заправки"
+def parse_refuel(tokens):
+    date, time, plate, fuel, cost = tokens[0], tokens[1], tokens[2], tokens[3], tokens[4]
+    return {"Date": date, "Time": time, "Plate": plate, "Fuel": fuel, "Cost": cost}
+
+# Таблица соответствий "тип ---> функция-парсер"
+PARSERS = {
+    "Фиксация проезда автомобилей": parse_car_passage,
+    "Регистрация парковки": parse_parking,
+    "Регистрация заправки": parse_refuel,
+}
+
+# 1. Разбор строки по типам объектов через таблицу парсеров
+def parse_line(line: str) -> dict:
+    type_part, tokens = tokenize(line)
+    parser = PARSERS.get(type_part)
+    if parser:
+        data = parser(tokens)
+        return {"type": type_part, **data}
+    # неизвестный тип — просто вернём "сырые" токены
+    return {"type": type_part, "raw": tokens}
 
 # 2. Обработка файла
 def process_file(filename: str):
@@ -26,7 +58,7 @@ def process_file(filename: str):
 def main():
     filename = "input.txt"
     for obj in process_file(filename):
-        print(json.dumps(obj, ensure_ascii=False))
+        print(json.dumps(obj, ensure_ascii=False))  # вывод в JSON
 
 if __name__ == "__main__":
     main()
