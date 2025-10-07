@@ -13,20 +13,20 @@ def tokenize(line: str):
 # Формат свойств: "гггг.мм.дд" "чч:мм" "номер автомобиля" "скорость"
 def parse_car_passage(tokens):
     date, time, plate, speed = tokens[0], tokens[1], tokens[2], tokens[3]
-    return {"Date": date, "Time": time, "Plate": plate, "Speed": speed}
+    return {"Дата": date, "Время": time, "Номер": plate, "Скорость": speed}
 
 # Тип 2: Регистрация парковки
 # Формат свойств: "гггг.мм.дд" "чч:мм" "номер автомобиля" "номер места" "стоимость за час"
 def parse_parking(tokens):
     date, time, plate, place, cost = tokens[0], tokens[1], tokens[2], tokens[3], tokens[4]
-    return {"Date": date, "Time": time, "Plate": plate, "Place": place, "Cost": cost}
+    return {"Дата": date, "Время": time, "Номер": plate, "Место на парковке": place, "Стоимость": cost}
 
 # Тип 3: Регистрация заправки
 # Формат свойств: "гггг.мм.дд" "чч:мм" "номер автомобиля"
 #                 "тип топлива" "итоговая цена заправки"
 def parse_refuel(tokens):
     date, time, plate, fuel, cost = tokens[0], tokens[1], tokens[2], tokens[3], tokens[4]
-    return {"Date": date, "Time": time, "Plate": plate, "Fuel": fuel, "Cost": cost}
+    return {"Дата": date, "Время": time, "Номер": plate, "Вид топлива": fuel, "Стоимость": cost}
 
 # Таблица соответствий "тип ---> функция-парсер"
 PARSERS = {
