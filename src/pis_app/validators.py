@@ -3,7 +3,7 @@ import re
 from datetime import datetime
 from .errors import ValidationError
 
-# Разрешённые буквы госномеров РФ (ГОСТ, визуально отличимые)
+# Разрешённые буквы госномеров РФ по ГОСТу
 RUS_LETTERS = "АВЕКМНОРСТУХ"
 PLATE_RE = re.compile(rf"^[{RUS_LETTERS}]\d{{3}}[{RUS_LETTERS}]{{2}}\d{{2,3}}$")
 
@@ -35,7 +35,7 @@ def validate_int(value: str, name: str) -> str:
 
 def validate_float(value: str, name: str) -> str:
     try:
-        float(value.replace(",", "."))  # допустим 12,5
+        float(value.replace(",", "."))
     except ValueError as e:
         raise ValidationError(f"{name} должно быть числом: {value}") from e
     return value
