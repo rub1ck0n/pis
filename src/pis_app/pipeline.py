@@ -5,7 +5,7 @@ from .parsers import ParserRegistry, default_registry
 from .errors import ParseError
 
 def process_lines(lines: Iterable[str], registry: ParserRegistry | None = None) -> Iterator[dict]:
-    """Построчная обработка: всегда выдаём результат (успех/ошибка) в виде dict."""
+    """Построчная обработка: всегда выдаём результат (успех/ошибка) в виде dict"""
     reg = registry or default_registry()
     for i, raw in enumerate(lines, 1):
         line = raw.strip()
